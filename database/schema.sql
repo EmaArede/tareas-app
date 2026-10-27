@@ -1,8 +1,8 @@
-CREATE DATABASE IF NOT EXISTS tareas_app
+CREATE DATABASE IF NOT EXISTS tareas_db
   CHARACTER SET utf8mb4
   COLLATE utf8mb4_unicode_ci;
 
-USE tareas_app;
+USE tareas_db;
 
 CREATE TABLE IF NOT EXISTS usuarios (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -28,3 +28,10 @@ CREATE TABLE IF NOT EXISTS tareas (
     FOREIGN KEY (usuario_id) REFERENCES usuarios (id)
     ON DELETE CASCADE
 );
+
+CREATE USER IF NOT EXISTS 'tareas_app'@'localhost'
+  IDENTIFIED BY RANDOM PASSWORD;
+
+GRANT SELECT, INSERT, UPDATE, DELETE
+  ON tareas_db.*
+  TO 'tareas_app'@'localhost';
