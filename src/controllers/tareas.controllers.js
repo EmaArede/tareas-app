@@ -9,6 +9,20 @@ export async function listar(req, res, next) {
   }
 }
 
+export async function obtenerPorId(req, res, next) {
+  try {
+    const tarea = await tareasModel.buscarPorId(req.params.id, req.usuario.id);
+
+    if (!tarea) {
+      return res.status(404).json({ mensaje: 'Tarea no encontrada' });
+    }
+
+    return res.json({ tarea });
+  } catch (error) {
+    return next(error);
+  }
+}
+
 export async function crear(req, res, next) {
   try {
     const { titulo, descripcion = null } = req.body || {};
