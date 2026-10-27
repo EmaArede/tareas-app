@@ -1,0 +1,30 @@
+CREATE DATABASE IF NOT EXISTS tareas_app
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
+
+USE tareas_app;
+
+CREATE TABLE IF NOT EXISTS usuarios (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  nombre VARCHAR(100) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  password_hash VARCHAR(255) NOT NULL,
+  creado_en TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE KEY usuarios_email_unique (email)
+);
+
+CREATE TABLE IF NOT EXISTS tareas (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  usuario_id INT UNSIGNED NOT NULL,
+  titulo VARCHAR(255) NOT NULL,
+  descripcion TEXT NULL,
+  completada BOOLEAN NOT NULL DEFAULT FALSE,
+  creado_en TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  actualizado_en TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  KEY tareas_usuario_id_idx (usuario_id),
+  CONSTRAINT tareas_usuario_fk
+    FOREIGN KEY (usuario_id) REFERENCES usuarios (id)
+    ON DELETE CASCADE
+);
